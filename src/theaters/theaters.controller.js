@@ -4,27 +4,6 @@ const reduceProperties = require("../utils/reduce-properties");
 
 async function list(req, res) {
   const data = await theatersService.list();
-  const {
-    theater_id,
-    name,
-    address_line_1,
-    address_line_2,
-    city,
-    state,
-    zip,
-    created_at,
-    updated_at,
-    movie_id,
-    title,
-    runtime_in_minutes,
-    rating,
-    description,
-    image_url,
-    movie_created_at,
-    movie_updated_at,
-    is_showing,
-    mt_theater_id
-  }  = data;
 
   const reduceTheaterAndMovies = reduceProperties("theater_id", {
     movie_id: ["movies", null, "movie_id"],
