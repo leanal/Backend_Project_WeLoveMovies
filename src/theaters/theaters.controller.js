@@ -2,8 +2,13 @@ const theatersService = require("./theaters.service.js");
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const reduceProperties = require("../utils/reduce-properties");
 
-async function list(req, res) {
+async function list(req, res, next) {
+  const { movieId } = req.params;
   const data = await theatersService.list();
+  res.locals.theaters = data;
+
+  if (movieId) return next();
+
 
   const reduceTheaterAndMovies = reduceProperties("theater_id", {
     movie_id: ["movies", null, "movie_id"],
@@ -17,10 +22,16 @@ async function list(req, res) {
     is_showing: ["movies", null, "is_showing"],
     mt_theater_id: ["movies", null, "theater_id"],
   });
-
+  
+  // console.log(reduceTheaterAndMovies)
 //   console.log(JSON.stringify(reduceTheaterAndMovies(data), null, 4));
   res.json({ data: reduceTheaterAndMovies(data) });
 }
+
+async function listByMovie(req,res) {
+  const data = await theatersService.listByMovie(req.params.movieId);
+  res.json({ data: data })
+}
 module.exports = {
-  list: [asyncErrorBoundary(list)],
+  list: [asyncErrorBoundary(list), asyncErrorBoundary(listByMovie)],
 };
