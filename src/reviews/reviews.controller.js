@@ -36,7 +36,49 @@ async function readCritic(req, res) {
     res.json({ data: data })
 }
 
+async function listByMovie(req, res) {
+  const { movieId } = req.params;
+  const reviews = await reviewsService.listByMovie(movieId);
+  // destructure
+  const data = reviews.map(review => {
+    const {
+      review_id,
+      content,
+      score,
+      created_at,
+      updated_at,
+      critic_id,
+      movie_id,
+      c_critic_id,
+      preferred_name,
+      surname,
+      organization_name,
+      c_created_at,
+      c_updated_at,
+      } = review;
+      return {
+        review_id,
+        content,
+        score,
+        created_at,
+        updated_at,
+        critic_id,
+        movie_id,
+        critic: {
+          critic_id: c_critic_id,
+          preferred_name,
+          surname,
+          organization_name,
+          created_at: c_created_at,
+          updated_at: c_updated_at
+        }
+      }
+  });
+  res.json({ data: data });
+}
+
 module.exports = {
   destroy: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(destroy)],
-  update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update), asyncErrorBoundary(readCritic)]
+  update: [asyncErrorBoundary(reviewExists), asyncErrorBoundary(update), asyncErrorBoundary(readCritic)],
+  list: [asyncErrorBoundary(listByMovie)]
 };
