@@ -28,7 +28,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-knexfile.js
+# knexfile.js
 
 .attachignore
 docs/routes/movies_list.md
@@ -41,6 +41,6 @@ docs/tables/movies.md
 docs/tables/movies_theaters.md
 docs/tables/reviews.md
 docs/tables/theaters.md
-test/routes/movies.test.js
-test/routes/reviews.test.js
-test/routes/theaters.test.js
+# test/routes/movies.test.js
+# test/routes/reviews.test.js
+# test/routes/theaters.test.js
